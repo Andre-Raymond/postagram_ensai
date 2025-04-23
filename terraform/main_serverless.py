@@ -21,7 +21,7 @@ class ServerlessStack(TerraformStack):
         
         bucket = S3Bucket(
             self, "bucket",
-            bucket_prefix=""
+            bucket_prefix="S3"
         )
 
         # NE PAS TOUCHER !!!!
@@ -37,12 +37,12 @@ class ServerlessStack(TerraformStack):
 
         dynamo_table = DynamodbTable(
             self, "DynamodDB-table",
-            name= "",
-            hash_key="",
-            range_key="",
+            name= "user_post",
+            hash_key="name",
+            range_key="lastname",
             attribute=[
-                DynamodbTableAttribute(name="",type="S" ),
-                DynamodbTableAttribute(name="",type="S" ),
+                DynamodbTableAttribute(name="name",type="S" ),
+                DynamodbTableAttribute(name="lastname",type="S" ),
             ],
             billing_mode="PROVISIONED",
             read_capacity=5,
@@ -53,13 +53,13 @@ class ServerlessStack(TerraformStack):
 
         lambda_function = LambdaFunction(
             self, "lambda",
-            function_name="",
+            function_name="first_lambda",
             runtime="python3.10",
             memory_size=128,
             timeout=60,
-            role=f"",
+            role=f"arn:aws:iam::ID_COMPTE:role/LabRole",
             filename= code.path,
-            handler="",
+            handler="lambda_function.lambda_handler",
             environment={"variables":{}}
         )
 
